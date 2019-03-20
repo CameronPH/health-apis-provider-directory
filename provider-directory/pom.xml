@@ -11,7 +11,7 @@
     <jacoco.coverage>0.90</jacoco.coverage>
   </properties>
   <artifactId>provider-directory</artifactId>
-  <version>1.0.1-SNAPSHOT</version>
+  <version>1.0.3-SNAPSHOT</version>
   <packaging>jar</packaging>
   <dependencies>
     <dependency>
@@ -21,7 +21,7 @@
     <dependency>
       <groupId>gov.va.api.health</groupId>
       <artifactId>provider-directory-api</artifactId>
-      <version>1.0.1-SNAPSHOT</version>
+      <version>1.0.3-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>gov.va.dvp</groupId>
@@ -79,12 +79,12 @@
             </configuration>
           </execution>
           <execution>
-            <id>conformance-timestamp</id>
+            <id>capability-timestamp</id>
             <goals>
               <goal>timestamp-property</goal>
             </goals>
             <configuration>
-              <name>conformance.publication-date</name>
+              <name>capability.publication-date</name>
               <pattern>yyyy-MM-dd'T'HH:mm:ss'Z'</pattern>
               <timeZone>UTC</timeZone>
               <locale>en_US</locale>
