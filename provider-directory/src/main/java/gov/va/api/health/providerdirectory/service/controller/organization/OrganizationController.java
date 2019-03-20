@@ -29,17 +29,18 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RestController
 @RequestMapping(
-    value = {"/api/Organization"},
-    produces = {"application/json"}
+  value = {"/api/Organization"},
+  produces = {"application/json"}
 )
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class OrganizationController {
 
   private Transformer transformer;
+
   private Bundler bundler;
 
-  private Organization.Bundle bundle(MultiValueMap<String, String> parameters, int page, int count) {
-
+  private Organization.Bundle bundle(
+      MultiValueMap<String, String> parameters, int page, int count) {
     PageLinks.LinkConfig linkConfig =
         PageLinks.LinkConfig.builder()
             .path("Practitioner")
@@ -57,6 +58,54 @@ public class OrganizationController {
             Organization.Bundle::new));
   }
 
+  /** Search by address-city. */
+  @GetMapping(params = {"address-city"})
+  public Organization.Bundle searchByAddressCity(
+      @RequestParam("address-city") String addressCity,
+      @RequestParam(value = "page", defaultValue = "1") @Min(1) int page,
+      @RequestParam(value = "_count", defaultValue = "1") @Min(0) int count) {
+    return bundle(
+        Parameters.builder()
+            .add("address-city", addressCity)
+            .add("page", page)
+            .add("_count", count)
+            .build(),
+        page,
+        count);
+  }
+
+  /** Search by address-postalcode. */
+  @GetMapping(params = {"address-postalcode"})
+  public Organization.Bundle searchByAddressPostalcode(
+      @RequestParam("address-postalcode") String addressPostalcode,
+      @RequestParam(value = "page", defaultValue = "1") @Min(1) int page,
+      @RequestParam(value = "_count", defaultValue = "1") @Min(0) int count) {
+    return bundle(
+        Parameters.builder()
+            .add("address-postalcode", addressPostalcode)
+            .add("page", page)
+            .add("_count", count)
+            .build(),
+        page,
+        count);
+  }
+
+  /** Search by address-state. */
+  @GetMapping(params = {"address-state"})
+  public Organization.Bundle searchByAddressState(
+      @RequestParam("address-state") String addressState,
+      @RequestParam(value = "page", defaultValue = "1") @Min(1) int page,
+      @RequestParam(value = "_count", defaultValue = "1") @Min(0) int count) {
+    return bundle(
+        Parameters.builder()
+            .add("address-state", addressState)
+            .add("page", page)
+            .add("_count", count)
+            .build(),
+        page,
+        count);
+  }
+
   /** Search by identifier. */
   @GetMapping(params = {"identifier"})
   public Organization.Bundle searchByIdentifier(
@@ -64,7 +113,11 @@ public class OrganizationController {
       @RequestParam(value = "page", defaultValue = "1") @Min(1) int page,
       @RequestParam(value = "_count", defaultValue = "1") @Min(0) int count) {
     return bundle(
-        Parameters.builder().add("identifier", identifier).add("page", page).add("_count", count).build(),
+        Parameters.builder()
+            .add("identifier", identifier)
+            .add("page", page)
+            .add("_count", count)
+            .build(),
         page,
         count);
   }
@@ -81,52 +134,15 @@ public class OrganizationController {
         count);
   }
 
-  /** Search by address-city. */
-  @GetMapping(params = {"address-city"})
-  public Organization.Bundle searchByAddressCity(
-      @RequestParam("address-city") String addressCity,
-      @RequestParam(value = "page", defaultValue = "1") @Min(1) int page,
-      @RequestParam(value = "_count", defaultValue = "1") @Min(0) int count) {
-    return bundle(
-        Parameters.builder().add("address-city", addressCity).add("page", page).add("_count", count).build(),
-        page,
-        count);
-  }
-
-  /** Search by address-state. */
-  @GetMapping(params = {"address-state"})
-  public Organization.Bundle searchByAddressState(
-      @RequestParam("address-state") String addressState,
-      @RequestParam(value = "page", defaultValue = "1") @Min(1) int page,
-      @RequestParam(value = "_count", defaultValue = "1") @Min(0) int count) {
-    return bundle(
-        Parameters.builder().add("address-state", addressState).add("page", page).add("_count", count).build(),
-        page,
-        count);
-  }
-
-  /** Search by address-postalcode. */
-  @GetMapping(params = {"address-postalcode"})
-  public Organization.Bundle searchByAddressPostalcode(
-      @RequestParam("address-postalcode") String addressPostalcode,
-      @RequestParam(value = "page", defaultValue = "1") @Min(1) int page,
-      @RequestParam(value = "_count", defaultValue = "1") @Min(0) int count) {
-    return bundle(
-        Parameters.builder().add("address-postalcode", addressPostalcode).add("page", page).add("_count", count).build(),
-        page,
-        count);
-  }
-
   /** Hey, this is a validate endpoint. It validates. */
   @PostMapping(
-      value = "/$validate",
-      consumes = {"application/json", "application/json+fhir", "application/fhir+json"}
+    value = "/$validate",
+    consumes = {"application/json", "application/json+fhir", "application/fhir+json"}
   )
   public OperationOutcome validate(@RequestBody Organization.Bundle bundle) {
     return Validator.create().validate(bundle);
   }
 
   // TODO: Actually implement transformer
-  public interface Transformer
-      extends Function<Organization, Organization> {}
+  public interface Transformer extends Function<Organization, Organization> {}
 }

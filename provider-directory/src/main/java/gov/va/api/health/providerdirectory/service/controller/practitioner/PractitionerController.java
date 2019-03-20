@@ -30,8 +30,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RestController
 @RequestMapping(
-    value = {"/api/Practitioner"},
-    produces = {"application/json"}
+  value = {"/api/Practitioner"},
+  produces = {"application/json"}
 )
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class PractitionerController {
@@ -39,9 +39,11 @@ public class PractitionerController {
   private Transformer transformer;
   private Bundler bundler;
 
-  //TODO: bundle function and search will be fairly different since ProviderDirectory calls out to PPMS endpoint
+  // TODO: bundle function and search will be fairly different since ProviderDirectory calls out to
+  // PPMS endpoint
 
-  private Practitioner.Bundle bundle(MultiValueMap<String, String> parameters, int page, int count) {
+  private Practitioner.Bundle bundle(
+      MultiValueMap<String, String> parameters, int page, int count) {
 
     LinkConfig linkConfig =
         LinkConfig.builder()
@@ -67,7 +69,11 @@ public class PractitionerController {
       @RequestParam(value = "page", defaultValue = "1") @Min(1) int page,
       @RequestParam(value = "_count", defaultValue = "1") @Min(0) int count) {
     return bundle(
-        Parameters.builder().add("identifier", identifier).add("page", page).add("_count", count).build(),
+        Parameters.builder()
+            .add("identifier", identifier)
+            .add("page", page)
+            .add("_count", count)
+            .build(),
         page,
         count);
   }
@@ -80,22 +86,25 @@ public class PractitionerController {
       @RequestParam(value = "page", defaultValue = "1") @Min(1) int page,
       @RequestParam(value = "_count", defaultValue = "1") @Min(0) int count) {
     return bundle(
-        Parameters.builder().add("family", familyName).add("given", givenName)
-            .add("page", page).add("_count", count).build(),
+        Parameters.builder()
+            .add("family", familyName)
+            .add("given", givenName)
+            .add("page", page)
+            .add("_count", count)
+            .build(),
         page,
         count);
   }
 
   /** Hey, this is a validate endpoint. It validates. */
   @PostMapping(
-      value = "/$validate",
-      consumes = {"application/json", "application/json+fhir", "application/fhir+json"}
+    value = "/$validate",
+    consumes = {"application/json", "application/json+fhir", "application/fhir+json"}
   )
   public OperationOutcome validate(@RequestBody Practitioner.Bundle bundle) {
     return Validator.create().validate(bundle);
   }
 
   // TODO: Actually implement transformer
-  public interface Transformer
-      extends Function<Practitioner, Practitioner> {}
+  public interface Transformer extends Function<Practitioner, Practitioner> {}
 }

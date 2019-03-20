@@ -15,11 +15,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-/** This implementation uses a configurable base URL (argonaut.url) for the links. */
+/** This implementation uses a configurable base URL (provider-directory.url) for the links. */
 @Service
 public class ConfigurableBaseUrlPageLinks implements PageLinks {
   /**
-   * The published URL for argonaut, which is likely not the hostname of the machine running this
+   * The published URL for provider-directory, which is likely not the hostname of the machine running this
    * application.
    */
   private final String baseUrl;
@@ -28,7 +28,7 @@ public class ConfigurableBaseUrlPageLinks implements PageLinks {
 
   @Autowired
   public ConfigurableBaseUrlPageLinks(
-      @Value("${argonaut.url}") String baseUrl, @Value("${argonaut.base-path}") String basePath) {
+      @Value("${provider-directory.url}") String baseUrl, @Value("${provider-directory.base-path}") String basePath) {
     this.baseUrl = baseUrl;
     this.basePath = basePath;
   }
