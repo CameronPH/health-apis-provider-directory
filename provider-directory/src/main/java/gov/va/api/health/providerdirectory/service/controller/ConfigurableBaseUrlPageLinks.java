@@ -19,8 +19,8 @@ import org.springframework.util.MultiValueMap;
 @Service
 public class ConfigurableBaseUrlPageLinks implements PageLinks {
   /**
-   * The published URL for provider-directory, which is likely not the hostname of the machine running this
-   * application.
+   * The published URL for provider-directory, which is likely not the hostname of the machine
+   * running this application.
    */
   private final String baseUrl;
   /** These base path for resources, e.g. api */
@@ -28,7 +28,8 @@ public class ConfigurableBaseUrlPageLinks implements PageLinks {
 
   @Autowired
   public ConfigurableBaseUrlPageLinks(
-      @Value("${provider-directory.url}") String baseUrl, @Value("${provider-directory.base-path}") String basePath) {
+      @Value("${provider-directory.url}") String baseUrl,
+      @Value("${provider-directory.base-path}") String basePath) {
     this.baseUrl = baseUrl;
     this.basePath = basePath;
   }
